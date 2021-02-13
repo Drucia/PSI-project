@@ -42,3 +42,23 @@ services:
       - ASPNETCORE_URLS=https://+;http://+;
     volumes:
         - ./PSI-2020/PSI-2020-backend/PSI-2020-backend:/PSI-Backend
+
+  backend-auth:
+    build: ./PSI-2020/PSI-2020-backend
+    image: psi-backend:1.0
+    container_name: psi-auth
+    command: sh -c "dotnet publish -c Release; chmod 777 bin/Release/netcoreapp3.1/PSI-2020-authentication-mock; ./bin/Release/netcoreapp3.1/PSI-2020-authentication-mock"
+    environment:
+      - ASPNETCORE_URLS=https://+;http://+;
+    volumes:
+        - ./PSI-2020/PSI-2020-backend/PSI-2020-authentication-mock:/PSI-Backend
+
+  backend-storage:
+    build: ./PSI-2020/PSI-2020-backend
+    image: psi-backend:1.0
+    container_name: psi-storage
+    command: sh -c "dotnet publish -c Release; chmod 777 bin/Release/netcoreapp3.1/PSI-2020-storage-mock; ./bin/Release/netcoreapp3.1/PSI-2020-storage-mock"
+    environment:
+      - ASPNETCORE_URLS=https://+;http://+;
+    volumes:
+        - ./PSI-2020/PSI-2020-backend/PSI-2020-storage-mock:/PSI-Backend
