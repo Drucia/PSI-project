@@ -1,0 +1,25 @@
+TEST HAVE BEEN DONE ON EC2 c4.xlarge INSTANCE
+
+CPU: vCPU 8 Core 2.9 GHz
+RAM: 7.5GiB
+
+---
+
+TEST RESULT FOR GET REQUESTS
+
+Time to reach host:               108.701662ms
+Total requests:                   30
+Total computation time:           3.279874591s
+Computation time per request:     627.491µs
+Users that can be handled in 5s:  7968
+
+---
+
+TEST RESULT CORRECT POST REQUESTS
+
+Time to reach host:               122.899381ms
+Total requests:                   30
+Total computation time:           7.219889291s
+Computation time per request:     117.763595ms
+Users that can be handled in 5s:  42
+

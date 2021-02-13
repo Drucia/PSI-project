@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    
+    stages {
+        
+        stage('Install packages') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                }
+            }
+        }
+        stage('Run tests') {
+            steps {
+                dir('frontend') {
+                    withEnv(['CHROME_BIN=\'/usr/bin/chromium\'']) {
+                        sh 'ng test --watch=false'
+                    }
+                }
+            
+                junit 'frontend/test_reports/*.xml'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                dir('frontend') {
+                    sh 'ng build --prod'
+                }
+            }
+        }
+        
+        stage('Deliver through SFTP') {
+            steps {
+                dir('frontend/dist') {
+                    sh '''
+                    sftp -i ~/.ssh/ec2psi.pem ubuntu@35.171.150.89 <<EOF
+                    put -r frontend
+                    EOF
+                    '''
+                }
+            }
+        }
+
+    }
+}

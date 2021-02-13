@@ -1,0 +1,24 @@
+TEST HAVE BEEN DONE ON EC2 t2.micro INSTANCE
+
+CPU: vCPU 1 Core 3.3 GHz
+RAM: 1GiB
+
+---
+
+TEST RESULT FOR GET REQUESTS
+
+Time to reach host:               110.492639ms
+Total requests:                   30
+Total computation time:           3.359894237s
+Computation time per request:     1.503835ms
+Users that can be handled in 5s:  3324
+
+---
+
+TEST RESULT CORRECT POST REQUESTS
+
+Time to reach host:               122.897579ms
+Total requests:                   30
+Total computation time:           7.363172048s
+Computation time per request:     122.541489ms
+Users that can be handled in 5s:  40

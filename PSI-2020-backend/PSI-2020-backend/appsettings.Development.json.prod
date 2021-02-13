@@ -1,0 +1,31 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "ServerSettings": {
+    "ServerAddress": "http://0.0.0.0:5000"
+  },
+  "ConnectionStrings": {
+    "DatabasePostgres": "Host=db;Database=psiDatabase;Username=postgres;Password=password"
+  },
+  "AuthOptions": {
+    "Secret": "c=b?Kf5K$Ny#xFnmpjJune4BT+7B9_6bUCw4?m+VNpe$spLZ5GN3!um=h8n-x?9ydJkqr=",
+    "Expiration": "60"
+  },
+  "PredefinedAccounts": [
+    {
+      "email": "admin@admin.com",
+      "password": "adminPassworD1!",
+      "isAdmin": true
+    },
+    {
+      "email": "user@user.com",
+      "password": "userPassworD1!",
+      "isAdmin": false
+    }
+  ]
+}
