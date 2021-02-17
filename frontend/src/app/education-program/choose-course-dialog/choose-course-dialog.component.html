@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ 'psi.choose-course-title' | translate }}</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-form-field appearance="outline" [style.fontSize.px]="12" floatLabel="always">
+        <mat-label>{{ 'psi.course' | translate }}</mat-label>
+        <mat-select [(value)]="selectedCourse">
+            <mat-option *ngFor="let course of courses" [value]="course" [matTooltip]="isPolish ? course.name : course.engName" 
+            matTooltipPosition="right">{{ isPolish ? course.name : course.engName }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>{{ 'psi.cancel' | translate }}</button>
+    <button mat-raised-button [mat-dialog-close]="selectedCourse" color="primary" [disabled]="!selectedCourse">{{ 'psi.choose-btn' | translate }}</button>
+</mat-dialog-actions>

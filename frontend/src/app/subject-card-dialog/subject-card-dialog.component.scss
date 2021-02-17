@@ -1,0 +1,99 @@
+.mat-dialog-title{
+    text-decoration: underline;
+}
+
+.lectures {
+    background: khaki;;
+}
+
+.span-lectures {
+    color: khaki; 
+    font-weight: bold;
+}
+
+.laboratories {
+    background: cadetblue;;
+}
+
+.span-laboratories {
+    color: cadetblue; 
+    font-weight: bold;
+}
+
+.projects {
+    background: rgb(139, 196, 55);
+}
+
+.span-projects {
+    color:  rgb(139, 196, 55); 
+    font-weight: bold;
+}
+
+.seminaries {
+    background: indianred;
+}
+
+.span-seminaries {
+    color: indianred; 
+    font-weight: bold;
+}
+
+.exercises {
+    background: lightsalmon;
+}
+
+.span-exercises {
+    color: lightsalmon; 
+    font-weight: bold;
+}
+
+.card {
+    height: 10rem;
+    width: 18rem;
+    margin-bottom: 1rem;
+}
+
+.lectures-fab{
+    height: 20px;
+    margin-right: 0.5rem;
+    cursor: unset;
+}
+
+.lectures-fab-add{
+    color: rgba(44, 44, 44, 0.87);;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+   opacity: 1;
+}
+.text-box {
+    color: rgba(44, 44, 44, 0.57);
+}
+/* Border */
+::ng-deep .text-box .mat-form-field-appearance-outline .mat-form-field-outline{
+    color: rgba(44, 44, 44, 0.57);
+}
+
+.too-much-hours{
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.must-be-unique {
+    color: #ff0000 !important;
+    font-weight: bold;
+}
+
+.good-amount-of-hours {
+    color: green;
+    font-weight: bold;
+}
+
+.mat-option.mat-active {
+    background: #30303094;
+  }
+
+.mat-option:hover:not(.mat-option-disabled){
+    background: #30303094;
+}

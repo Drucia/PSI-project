@@ -1,0 +1,20 @@
+<div fxLayout="row" fxLayoutAlign="space-between center" style="margin-left: 2rem; margin-right:1rem; margin-top: 2rem;">
+    <div fxLayout="row nowrap" fxLayoutGap="2%" class="sub-title">
+        <h1 class="margin-zero" translate>psi.subject-cards</h1>
+        <mat-icon style="transform: scale(2);">file_copy</mat-icon>
+    </div>
+    <mat-form-field appearance="outline" [style.fontSize.px]="12" style="max-width: 200px; max-height: 50px;">
+        <mat-label translate>psi.search</mat-label>
+        <input matInput id="searchInput" type="text" [(ngModel)]="searchText">
+        <button mat-button *ngIf="searchText && searchText !== ''" matSuffix mat-icon-button aria-label="Clear" (click)="clearField()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+</div>
+<ul style="overflow-x: auto; margin: 1rem;">
+    <div fxLayout="column wrap" fxLayoutGap="1%" fxLayoutAlign=" start" style="height: 70vh;">
+        <li *ngFor="let link of links | filterFieldsAndSpec:searchText" class="margin-right">
+            <a [href]="environment.apiUrl + link.link"> {{ link.name }} </a>
+        </li>
+    </div>
+</ul>

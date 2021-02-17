@@ -1,0 +1,19 @@
+ .fix-size {
+     height: 35%;
+     width: 30%;
+     min-width: 250px;
+     text-align: center;
+ }
+
+ .mat-card {
+    background:#e7d7d7;
+    color: rgba(44, 44, 44, 0.87);
+    border-color: rgb(91,16,16);
+    border: 2px solid;
+    border-radius: 2rem;
+    cursor: pointer;
+ }
+
+ .mat-card h1 {
+    font: 500 30px/39px Roboto;
+ }

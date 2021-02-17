@@ -1,0 +1,430 @@
+<div fxLayout="row" fxLayoutAlign="space-between">
+  <h2 style="font-style: italic;">{{ isPolish ? originalCourse.name : originalCourse.engName }}</h2>
+  <h2 mat-dialog-title>{{ 'psi.add-card-title' | translate }}</h2>
+</div>
+<mat-dialog-content class="mat-typography" style="width: 75vw; height: 100vh;">
+  <mat-tab-group mat-align-tabs="center" class="meta-data" style="min-height: 55vh; min-width: 55vh;" dynamicHeight>
+    <mat-tab [label]="'psi.requirements-and-aims' | translate">
+      <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="margin-top: 1rem;">
+        <ng-container>
+          <div fxFlex="0 1 calc(50% - 32px)" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+            <span style="width: 40%; text-align: right;">{{ 'psi.prerequisites' | translate }} (pl):</span>
+            <mat-form-field appearance="outline" style="max-height: 80%; width: 50%;">
+              <textarea matInput autosize required [(ngModel)]="card.prerequisites"></textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex="0 1 calc(50% - 32px)" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+            <span style="width: 40%; text-align: right;">{{ 'psi.prerequisites' | translate }} (en):</span>
+            <mat-form-field appearance="outline" style="max-height: 80%; width: 50%;">
+              <textarea matInput autosize required [(ngModel)]="card.prerequisitesEng"></textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex="0 1 calc(50% - 32px)" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+            <span style="width: 40%; text-align: right;">{{ 'psi.aims' | translate }} (pl):</span>
+            <mat-form-field appearance="outline" style="max-height: 80%; width: 50%;">
+              <textarea matInput autosize required [(ngModel)]="card.aims"></textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex="0 1 calc(50% - 32px)" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+            <span style="width: 40%; text-align: right;">{{ 'psi.aims' | translate }} (en):</span>
+            <mat-form-field appearance="outline" style="max-height: 80%; width: 50%;">
+              <textarea matInput autosize required [(ngModel)]="card.aimsEng"></textarea>
+            </mat-form-field>
+          </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="'psi.program-content' | translate">
+      <div style="margin-top: 1rem;">
+      <div *ngIf="originalCourse.sumHoursForLectures != 0">
+        <div fxLayoutAlign=" center" fxLayoutGap="1%" [ngClass]="{
+          'too-much-hours': getSumOfHoursFor(card.lectures) > originalCourse.sumHoursForLectures,
+          'must-be-unique': !checkIfSubjectsAreUnique(card.lectures),
+          'good-amount-of-hours': getSumOfHoursFor(card.lectures) == originalCourse.sumHoursForLectures}">
+          <button mat-button class="lectures lectures-fab"></button>
+          <span>{{ 'psi.lectures' | translate }}:</span>
+          <div>
+            <span [ngClass]="{
+              'span-lectures': getSumOfHoursFor(card.lectures) < originalCourse.sumHoursForLectures}"> {{ getSumOfHoursFor(card.lectures)}}h</span>
+            <span [ngClass]="{
+              'span-lectures': getSumOfHoursFor(card.lectures) < originalCourse.sumHoursForLectures}"> / {{ originalCourse.sumHoursForLectures}}h</span>
+            <span style="margin-left: 1rem;" *ngIf="!checkIfSubjectsAreUnique(card.lectures)"><- {{ 'psi.must-be-unique' | translate }}</span>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="left center" fxLayoutGap="2%" style="margin: 1rem;">
+          <mat-card *ngFor="let program of card.lectures; let idx = index" appMaterialElevation class="lectures card">
+            <div fxLayout="row nowrap" fxLayoutAlign="center center" fxLayoutGap="1%" style="height: 9rem;">
+              <div fxLayout="column nowrap">
+                <mat-form-field appearance="outline" style="height: 4.5rem; margin-bottom: 1rem;" floatLabel="always">
+                  <mat-label class="text-box">{{ 'psi.subject' | translate}} (pl) {{idx+1}}</mat-label>
+                  <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.lectures[idx].subject"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="height: 4.5rem;" floatLabel="always">
+                  <mat-label class="text-box">{{ 'psi.subject' | translate}} (en) {{idx+1}}</mat-label>
+                  <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.lectures[idx].engSubject"></textarea>
+                </mat-form-field>
+              </div>
+              <div fxLayout="column" style="max-width: 30%;">
+                <button mat-icon-button class="close-button" style="align-self: flex-end; margin-top: -3rem; margin-right: -1rem;"
+                (click)="deleteProgramClicked(card.lectures, idx)">
+                  <mat-icon class="close-icon" color="accent">close</mat-icon>
+                </button>
+                <mat-form-field appearance="outline" floatLabel="always" style="margin-top: 1rem;">
+                  <mat-label class="text-box">{{ 'psi.hours' | translate }}</mat-label>
+                  <input matInput type="number" min="1" style="text-align: center;" class="text-box" [(ngModel)]="card.lectures[idx].hours">
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-card>
+          <div fxLayoutAlign="center center" class="card fix-size">
+              <button mat-mini-fab *ngIf="getSumOfHoursFor(card.lectures) < originalCourse.sumHoursForLectures" class="lectures lectures-fab-add" matTooltip="Dodaj treść programową" (click)="addNewProgramFor(card.lectures)">
+                  <mat-icon>add</mat-icon>
+              </button>
+          </div>
+        </div>
+      </div>
+  
+  
+      <div *ngIf="originalCourse.sumHoursForLaboratories != 0">
+        <div fxLayoutAlign=" center" fxLayoutGap="1%" [ngClass]="{
+          'too-much-hours': getSumOfHoursFor(card.laboratories) > originalCourse.sumHoursForLaboratories,
+          'must-be-unique': !checkIfSubjectsAreUnique(card.laboratories),
+          'good-amount-of-hours': getSumOfHoursFor(card.laboratories) == originalCourse.sumHoursForLaboratories}">
+          <button mat-button class="laboratories lectures-fab"></button>
+          <span>{{ 'psi.laboratories' | translate }}:</span>
+          <div>
+            <span [ngClass]="{
+              'span-laboratories': getSumOfHoursFor(card.laboratories) < originalCourse.sumHoursForLaboratories}"> {{ getSumOfHoursFor(card.laboratories)}}h</span>
+            <span [ngClass]="{
+              'span-laboratories': getSumOfHoursFor(card.laboratories) < originalCourse.sumHoursForLaboratories}"> / {{ originalCourse.sumHoursForLaboratories}}h</span>
+            <span style="margin-left: 1rem;" *ngIf="!checkIfSubjectsAreUnique(card.laboratories)"><- {{ 'psi.must-be-unique' | translate }}</span>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="left center" fxLayoutGap="2%" style="margin: 1rem;">
+          <mat-card *ngFor="let program of card.laboratories; let idx = index" appMaterialElevation class="laboratories card">
+            <div fxLayout="row nowrap" fxLayoutAlign="center center" fxLayoutGap="1%" style="height: 9rem;">
+              <div fxLayout="column nowrap">
+                <mat-form-field appearance="outline" style="height: 4.5rem; margin-bottom: 1rem;" floatLabel="always">
+                  <mat-label class="text-box">{{ 'psi.subject' | translate}} (pl) {{idx+1}}</mat-label>
+                  <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.laboratories[idx].subject"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="height: 4.5rem;" floatLabel="always">
+                  <mat-label class="text-box">{{ 'psi.subject' | translate}} (en) {{idx+1}}</mat-label>
+                  <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.laboratories[idx].engSubject"></textarea>
+                </mat-form-field>
+              </div>
+              <div fxLayout="column" style="max-width: 30%;">
+                <button mat-icon-button class="close-button" style="align-self: flex-end; margin-top: -3rem; margin-right: -1rem;"
+                (click)="deleteProgramClicked(card.laboratories, idx)">
+                  <mat-icon class="close-icon" color="accent">close</mat-icon>
+                </button>
+                <mat-form-field appearance="outline" floatLabel="always" style="margin-top: 1rem;">
+                  <mat-label class="text-box">{{ 'psi.hours' | translate }}</mat-label>
+                  <input matInput type="number" min="1" style="text-align: center;" class="text-box" [(ngModel)]="card.laboratories[idx].hours">
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-card>
+          <div fxLayoutAlign="center center" class="card fix-size">
+              <button mat-mini-fab *ngIf="getSumOfHoursFor(card.laboratories) < originalCourse.sumHoursForLaboratories" class="laboratories lectures-fab-add" matTooltip="Dodaj treść programową" (click)="addNewProgramFor(card.laboratories)">
+                  <mat-icon>add</mat-icon>
+              </button>
+          </div>
+        </div>
+      </div>
+  
+  
+    <div *ngIf="originalCourse.sumHoursForProjects != 0">
+      <div fxLayoutAlign=" center" fxLayoutGap="1%" [ngClass]="{
+        'too-much-hours': getSumOfHoursFor(card.projects) > originalCourse.sumHoursForProjects,
+        'must-be-unique': !checkIfSubjectsAreUnique(card.projects),
+        'good-amount-of-hours': getSumOfHoursFor(card.projects) == originalCourse.sumHoursForProjects}">
+        <button mat-button class="projects lectures-fab"></button>
+        <span>{{ 'psi.projects' | translate }}:</span>
+        <div>
+          <span [ngClass]="{
+            'span-projects': getSumOfHoursFor(card.projects) < originalCourse.sumHoursForProjects}"> {{ getSumOfHoursFor(card.projects)}}h</span>
+          <span [ngClass]="{
+            'span-projects': getSumOfHoursFor(card.projects) < originalCourse.sumHoursForProjects}"> / {{ originalCourse.sumHoursForProjects}}h</span>
+          <span style="margin-left: 1rem;" *ngIf="!checkIfSubjectsAreUnique(card.projects)"><- {{ 'psi.must-be-unique' | translate }}</span>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutAlign="left center" fxLayoutGap="2%" style="margin: 1rem;">
+        <mat-card *ngFor="let program of card.projects; let idx = index" appMaterialElevation class="projects card">
+          <div fxLayout="row nowrap" fxLayoutAlign="center center" fxLayoutGap="1%" style="height: 9rem;">
+            <div fxLayout="column nowrap">
+              <mat-form-field appearance="outline" style="height: 4.5rem; margin-bottom: 1rem;" floatLabel="always">
+                <mat-label class="text-box">{{ 'psi.subject' | translate}} (pl) {{idx+1}}</mat-label>
+                <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.projects[idx].subject"></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline" style="height: 4.5rem;" floatLabel="always">
+                <mat-label class="text-box">{{ 'psi.subject' | translate}} (en) {{idx+1}}</mat-label>
+                <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.projects[idx].engSubject"></textarea>
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" style="max-width: 30%;">
+              <button mat-icon-button class="close-button" style="align-self: flex-end; margin-top: -3rem; margin-right: -1rem;"
+              (click)="deleteProgramClicked(card.projects, idx)">
+                <mat-icon class="close-icon" color="accent">close</mat-icon>
+              </button>
+              <mat-form-field appearance="outline" floatLabel="always" style="margin-top: 1rem;">
+                <mat-label class="text-box">{{ 'psi.hours' | translate }}</mat-label>
+                <input matInput type="number" min="1" style="text-align: center;" class="text-box" [(ngModel)]="card.projects[idx].hours">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+        <div fxLayoutAlign="center center" class="card fix-size">
+            <button mat-mini-fab *ngIf="getSumOfHoursFor(card.projects) < originalCourse.sumHoursForProjects" class="projects lectures-fab-add" matTooltip="Dodaj treść programową" (click)="addNewProgramFor(card.projects)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div *ngIf="originalCourse.sumHoursForSeminaries != 0">
+      <div fxLayoutAlign=" center" fxLayoutGap="1%" [ngClass]="{
+        'too-much-hours': getSumOfHoursFor(card.seminaries) > originalCourse.sumHoursForSeminaries,
+        'must-be-unique': !checkIfSubjectsAreUnique(card.seminaries),
+        'good-amount-of-hours': getSumOfHoursFor(card.seminaries) == originalCourse.sumHoursForSeminaries}">
+        <button mat-button class="seminaries lectures-fab"></button>
+        <span>{{ 'psi.seminaries' | translate }}:</span>
+        <div>
+          <span [ngClass]="{
+            'span-seminaries': getSumOfHoursFor(card.seminaries) < originalCourse.sumHoursForSeminaries}"> {{ getSumOfHoursFor(card.seminaries)}}h</span>
+          <span [ngClass]="{
+            'span-seminaries': getSumOfHoursFor(card.seminaries) < originalCourse.sumHoursForSeminaries}"> / {{ originalCourse.sumHoursForSeminaries}}h</span>
+          <span style="margin-left: 1rem;" *ngIf="!checkIfSubjectsAreUnique(card.seminaries)"><- {{ 'psi.must-be-unique' | translate }}</span>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutAlign="left center" fxLayoutGap="2%" style="margin: 1rem;">
+        <mat-card *ngFor="let program of card.seminaries; let idx = index" appMaterialElevation class="seminaries card">
+          <div fxLayout="row nowrap" fxLayoutAlign="center center" fxLayoutGap="1%" style="height: 9rem;">
+            <div fxLayout="column nowrap">
+              <mat-form-field appearance="outline" style="height: 4.5rem; margin-bottom: 1rem;" floatLabel="always">
+                <mat-label class="text-box">{{ 'psi.subject' | translate}} (pl) {{idx+1}}</mat-label>
+                <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.seminaries[idx].subject"></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline" style="height: 4.5rem;" floatLabel="always">
+                <mat-label class="text-box">{{ 'psi.subject' | translate}} (en) {{idx+1}}</mat-label>
+                <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.seminaries[idx].engSubject"></textarea>
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" style="max-width: 30%;">
+              <button mat-icon-button class="close-button" style="align-self: flex-end; margin-top: -3rem; margin-right: -1rem;"
+              (click)="deleteProgramClicked(card.seminaries, idx)">
+                <mat-icon class="close-icon" color="accent">close</mat-icon>
+              </button>
+              <mat-form-field appearance="outline" floatLabel="always" style="margin-top: 1rem;">
+                <mat-label class="text-box">{{ 'psi.hours' | translate }}</mat-label>
+                <input matInput type="number" min="1" style="text-align: center;" class="text-box" [(ngModel)]="card.seminaries[idx].hours">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+        <div fxLayoutAlign="center center" class="card fix-size">
+            <button mat-mini-fab *ngIf="getSumOfHoursFor(card.seminaries) < originalCourse.sumHoursForSeminaries" class="seminaries lectures-fab-add" matTooltip="Dodaj treść programową" (click)="addNewProgramFor(card.seminaries)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div *ngIf="originalCourse.sumHoursForExercises != 0">
+      <div fxLayoutAlign=" center" fxLayoutGap="1%" [ngClass]="{
+        'too-much-hours': getSumOfHoursFor(card.exercises) > originalCourse.sumHoursForExercises,
+        'must-be-unique': !checkIfSubjectsAreUnique(card.exercises),
+        'good-amount-of-hours': getSumOfHoursFor(card.exercises) == originalCourse.sumHoursForExercises}">
+        <button mat-button class="exercises lectures-fab"></button>
+        <span>{{ 'psi.exercises' | translate }}:</span>
+        <div>
+          <span [ngClass]="{
+            'span-exercises': getSumOfHoursFor(card.exercises) < originalCourse.sumHoursForExercises}"> {{ getSumOfHoursFor(card.exercises)}}h</span>
+          <span [ngClass]="{
+            'span-exercises': getSumOfHoursFor(card.exercises) < originalCourse.sumHoursForExercises}"> / {{ originalCourse.sumHoursForExercises}}h</span>
+          <span style="margin-left: 1rem;" *ngIf="!checkIfSubjectsAreUnique(card.exercises)"><- {{ 'psi.must-be-unique' | translate }}</span>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutAlign="left center" fxLayoutGap="2%" style="margin: 1rem;">
+        <mat-card *ngFor="let program of card.exercises; let idx = index" appMaterialElevation class="exercises card">
+          <div fxLayout="row nowrap" fxLayoutAlign="center center" fxLayoutGap="1%" style="height: 9rem;">
+            <div fxLayout="column nowrap">
+              <mat-form-field appearance="outline" style="height: 4.5rem; margin-bottom: 1rem;" floatLabel="always">
+                <mat-label class="text-box">{{ 'psi.subject' | translate}} (pl) {{idx+1}}</mat-label>
+                <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.exercises[idx].subject"></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline" style="height: 4.5rem;" floatLabel="always">
+                <mat-label class="text-box">{{ 'psi.subject' | translate}} (en) {{idx+1}}</mat-label>
+                <textarea matInput style="resize: none; height: 2.5rem;" class="text-box" required [(ngModel)]="card.exercises[idx].engSubject"></textarea>
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" style="max-width: 30%;">
+              <button mat-icon-button class="close-button" style="align-self: flex-end; margin-top: -3rem; margin-right: -1rem;"
+              (click)="deleteProgramClicked(card.exercises, idx)">
+                <mat-icon class="close-icon" color="accent">close</mat-icon>
+              </button>
+              <mat-form-field appearance="outline" floatLabel="always" style="margin-top: 1rem;">
+                <mat-label class="text-box">{{ 'psi.hours' | translate }}</mat-label>
+                <input matInput type="number" min="1" style="text-align: center;" class="text-box" [(ngModel)]="card.exercises[idx].hours">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+        <div fxLayoutAlign="center center" class="card fix-size">
+            <button mat-mini-fab *ngIf="getSumOfHoursFor(card.exercises) < originalCourse.sumHoursForExercises" class="exercises lectures-fab-add" matTooltip="Dodaj treść programową" (click)="addNewProgramFor(card.exercises)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </mat-tab>
+    <mat-tab [label]="'psi.tools-and-literature' | translate">
+      <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="margin-top: 1rem;">
+        <ng-container>
+          <div fxFlex="0 1 calc(50% - 32px)" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+            <span style="width: 40%; text-align: right;">{{ 'psi.didact-tools' | translate }} (pl):</span>
+            <mat-form-field appearance="outline" style="max-height: 80%; width: 50%;">
+              <textarea matInput autosize required [(ngModel)]="card.tools"></textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex="0 1 calc(50% - 32px)" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+            <span style="width: 40%; text-align: right;">{{ 'psi.didact-tools' | translate }} (en):</span>
+            <mat-form-field appearance="outline" style="max-height: 80%; width: 50%;">
+              <textarea matInput autosize required [(ngModel)]="card.toolsEng"></textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex="0 1 calc(50% - 32px)" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+            <span style="width: 40%; text-align: right;">{{ 'psi.literature' | translate }} (pl):</span>
+            <mat-form-field appearance="outline" style="max-height: 80%; width: 50%;">
+              <textarea matInput autosize required [(ngModel)]="card.bibliography"></textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex="0 1 calc(50% - 32px)" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+            <span style="width: 40%; text-align: right;">{{ 'psi.literature' | translate }} (en):</span>
+            <mat-form-field appearance="outline" style="max-height: 80%; width: 50%;">
+              <textarea matInput autosize required [(ngModel)]="card.bibliographyEng"></textarea>
+            </mat-form-field>
+          </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+
+
+    <mat-tab [label]="'psi.effects' | translate ">
+      <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="2%"  style="margin-top: 1rem;">
+          <form [formGroup]="learningEffectForm" style="width: 70vw;">
+            <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="2%">
+                <span>{{ 'psi.add-effect' | translate }}:</span>
+                <div fxLayout="column" fxLayoutAlign="space-between center">
+                  <mat-form-field appearance="outline" [style.fontSize.px]="12" floatLabel="always">
+                    <mat-label>{{ 'psi.category' | translate }}</mat-label>
+                    <mat-select formControlName="category">
+                      <mat-option [value]="EffectCategoryType.Knowledge">{{ 'psi.Knowledge' | translate }}</mat-option>
+                      <mat-option [value]="EffectCategoryType.Abilities">{{ 'psi.Abilities' | translate }}</mat-option>
+                      <mat-option [value]="EffectCategoryType.Social">{{ 'psi.Social' | translate }}</mat-option>
+                  </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" [style.fontSize.px]="12" floatLabel="always">
+                    <mat-label>Suffix</mat-label>
+                    <input type="text" matInput formControlName="suffix" formControlName="suffix"
+                    [matAutocomplete]="autoSuffix"/>
+                    <mat-autocomplete #autoSuffix="matAutocomplete">
+                      <mat-option *ngFor="let suff of getExistingSuffixs()" [value]="suff">
+                        {{suff}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+                <mat-form-field appearance="outline" [style.fontSize.px]="12" floatLabel="always">
+                  <mat-label>{{ 'psi.description-label' | translate }} (pl)</mat-label>
+                  <textarea matInput style="resize: none; height: 5.5rem;" formControlName="description" #descInput></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [style.fontSize.px]="12" floatLabel="always">
+                  <mat-label>{{ 'psi.description-label' | translate }} (en)</mat-label>
+                  <textarea matInput style="resize: none; height: 5.5rem;" formControlName="descriptionEng" #descEngInput></textarea>
+                </mat-form-field>
+                <div fxLayout="column" fxLayoutAlign="space-between center" style="align-self: center;">
+                  <span>{{ 'psi.preview' | translate }} -> {{ learningEffectForm.get('suffix').value }}_01</span>
+                  <button mat-raised-button matTooltip="Dodaj efekt" (click)="addNewEffect()" style="align-self: center; margin-top: 1rem;" color="primary" [disabled]="learningEffectForm.invalid">
+                    {{ 'psi.add-btn' | translate }}
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+          </form>
+        <span>{{ 'psi.effects-knowledge' | translate }}:</span>
+        <mat-chip-list>
+          <mat-chip style="background: #9a342d;"
+            *ngFor="let effect of getEffectsFor(EffectCategoryType.Knowledge)"
+            [removable]="true"
+            [selectable]="false"
+            (removed)="removeEffect(effect)" [matTooltip]="isPolish ? effect.description : effect.descriptionEng" matTooltipPosition="above">
+            {{effect.code}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+        <span>{{ 'psi.effects-abilities' | translate }}:</span>
+        <mat-chip-list>
+          <mat-chip style="background: #9a342d;"
+            *ngFor="let effect of getEffectsFor(EffectCategoryType.Abilities)"
+            [removable]="true"
+            [selectable]="false"
+            (removed)="removeEffect(effect)" [matTooltip]="isPolish ? effect.description : effect.descriptionEng" matTooltipPosition="above">
+            {{effect.code}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+        <span>{{ 'psi.effects-social' | translate }}:</span>
+        <mat-chip-list>
+          <mat-chip style="background: #9a342d;"
+            *ngFor="let effect of getEffectsFor(EffectCategoryType.Social)"
+            [removable]="true"
+            [selectable]="false"
+            (removed)="removeEffect(effect)" [matTooltip]="isPolish ? effect.description : effect.descriptionEng" matTooltipPosition="above">
+            {{effect.code}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </mat-tab>
+
+
+    <mat-tab [label]="'psi.proffessors' | translate">
+        <div style="margin-top: 1rem;">
+        <span style="width: 40%; margin-right: 1rem;">{{ 'psi.proffessors' | translate }}:</span>
+        <mat-form-field appearance="outline" style="max-height: 80%; width: 30%;" [style.fontSize.px]="12">
+          <mat-chip-list #chipList aria-label="Prof selection">
+            <input
+              [placeholder]="'psi.search-proffessor' | translate"
+              #professorInput
+              [formControl]="professorCtrl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption (optionSelected)="selected($event)">
+            <mat-option *ngFor="let prof of filteredProf | async" [value]="prof">
+              {{prof}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-chip-list #chipList aria-label="Prof selection">
+          <mat-chip style="background: #9a342d;"
+            *ngFor="let prof of card.professors"
+            [removable]="true"
+            (removed)="remove(prof)" selected>
+            {{prof}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </mat-tab>
+</mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>{{ 'psi.cancel' | translate}}</button>
+  <button mat-raised-button [mat-dialog-close]="card" color="primary" [disabled]="!isFormValid()" (click)="changeStatusOfCard()">{{ 'psi.save' | translate}}</button>
+</mat-dialog-actions>

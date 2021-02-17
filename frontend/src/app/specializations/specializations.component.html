@@ -1,0 +1,19 @@
+<div fxLayout="column nowrap" fxLayoutAlign="center center" >
+    <div fxLayout="row wrap" fxLayoutAlign="center center" style="height: 65vh; width: 70vw;">
+        <mat-card *ngFor="let program of getNoWIPPrograms()" appMaterialElevation class="card" fxLayout="row" fxLayoutAlign="center center" 
+        [routerLink]="['/educationprograms/degrees/' + degree + '/artifacts', program.id]">
+                <h1>{{ isPolish ? program.specialization.name : program.specialization.engName }}</h1>
+        </mat-card>
+        <ng-container *ngIf="isTeacher">
+            <mat-card *ngFor="let program of getWIPPrograms()" appMaterialElevation class="card" fxLayout="row" fxLayoutAlign="center center" 
+            [routerLink]="['/educationprograms/degrees/' + degree + '/edit', program.id]">
+                <h1 class="margin-zero">{{ isPolish ? program.specialization.name : program.specialization.engName }}</h1>
+                <button mat-icon-button color="primary">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </mat-card>
+        </ng-container>
+        <h1 *ngIf="!isTeacher && getNoWIPPrograms().length == 0">W trakcie przygotowania ...</h1>
+        <h1 *ngIf="isTeacher && getWIPPrograms().length == 0 && getNoWIPPrograms().length == 0">Nie utworzono jeszcze programów ...</h1>
+    </div>
+</div>

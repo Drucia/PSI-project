@@ -1,0 +1,37 @@
+.login-card {
+    min-height: 20rem;
+    min-width: 20rem;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    background-color: #e7d7d7;
+}
+
+.mat-card {
+    color: rgba(44, 44, 44, 0.67);
+}
+
+::ng-deep .select .mat-select-value {
+    color: rgba(44, 44, 44, 0.57);
+}
+
+::ng-deep .select .mat-select-arrow {
+    color: rgba(44, 44, 44, 0.57);
+}
+
+::ng-deep .select mat-label{
+    color: rgba(44, 44, 44, 0.57);
+}
+
+/* Border */
+::ng-deep .select .mat-form-field-appearance-outline .mat-form-field-outline{
+    color: rgba(44, 44, 44, 0.57);
+}
+
+.label {
+    color: rgba(44, 44, 44, 0.57);
+}
+
+::ng-deep label span.mat-form-field-required-marker {
+    color: rgba(44, 44, 44, 0.57);
+}

@@ -1,0 +1,11 @@
+<div fxLayout="wrap" fxLayoutAlign="center center" fxLayoutGap="2%" style="height: 70vh;">
+    <mat-card appMaterialElevation class="fix-size" fxLayout="row" fxLayoutAlign="center center" [routerLink]="['/educationprograms/degrees', DegreeType.Bachelor]">
+            <h1>{{ 'psi.Bachelor' | translate }}</h1>
+    </mat-card>
+    <mat-card appMaterialElevation class="fix-size" fxLayout="row" fxLayoutAlign="center center" [routerLink]="['/educationprograms/degrees', DegreeType.Master]">
+            <h1>{{ 'psi.Master' | translate }}</h1>
+    </mat-card>
+</div>
+<div *ngIf="isTeacher" fxLayoutAlign="end" style="margin: 1rem; margin-right: 2rem;">
+    <button mat-raised-button routerLink="/educationprograms/new" color="primary" disabled>{{ 'psi.new-btn' | translate }} <mat-icon>add</mat-icon></button>
+</div>

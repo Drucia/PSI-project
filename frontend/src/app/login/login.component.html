@@ -1,0 +1,24 @@
+<div flex fxLayoutAlign="center center" style="height: 70vh;">
+    <mat-card class="login-card">
+        <mat-card-title style="text-align: center; margin-bottom: 2rem;">{{ 'psi.login' | translate }}</mat-card-title>
+        <div fxLayout="column">
+        <mat-error *ngIf="selectedUser == null && submitted">
+            {{ 'psi.login-error' | translate }}
+        </mat-error>
+        <mat-form-field appearance="outline">
+            <mat-label class="label">{{ 'psi.choose-role' | translate }}</mat-label>
+            <mat-select [(value)]="selectedUser" required class="select">
+                <mat-option [value]="RoleType.Student">{{ 'psi.role-student' | translate }}</mat-option>
+                <mat-option [value]="RoleType.Teacher">{{ 'psi.role-teacher' | translate }}</mat-option>
+                <mat-option [value]="RoleType.Error">{{ 'psi.role-error' | translate }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button (click)="onSubmitUser()" mat-raised-button color="primary">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="2%">
+                <span>{{ 'psi.login-btn' | translate }}</span>
+                <mat-spinner *ngIf="loading" color="accent" diameter="20"></mat-spinner>
+            </div>
+        </button>
+        </div>
+    </mat-card>
+</div>

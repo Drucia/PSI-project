@@ -1,0 +1,24 @@
+.fix-size-chips{
+    min-width: 100px;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.margin-zero {
+    margin-bottom: 0px;
+    margin-right: 7%;
+}
+
+.card {
+    flex: 1 0;
+    max-width: 27vw;
+    height: 25vh;
+    background:#e7d7d7;
+    color: rgba(44, 44, 44, 0.87);
+    border-color: rgb(91,16,16);
+    border: 2px solid;
+    border-radius: 1rem;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+}

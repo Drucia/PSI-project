@@ -1,0 +1,16 @@
+<div fxLayout="column nowrap" fxLayoutAlign="center center" >
+    <div fxLayout="row wrap" fxLayoutAlign="center center" style="height: 65vh; width: 70vw;">
+        <mat-card class="card" fxLayout="row" fxLayoutAlign="center center" style="cursor: initial;">
+            <h1 class="margin-zero">Efekty uczenia się</h1>
+            <mat-icon style="transform: scale(2);">military_tech</mat-icon>
+        </mat-card>
+        <mat-card class="card" fxLayout="row" fxLayoutAlign="center center" style="cursor: initial;">
+            <h1 class="margin-zero">Plan studiów</h1>
+            <mat-icon style="transform: scale(2);">date_range</mat-icon>
+        </mat-card>
+        <mat-card appMaterialElevation class="card" fxLayout="row" fxLayoutAlign="center center" [routerLink]="['../' + programId + '/cards']">
+            <h1 class="margin-zero">Karty Przedmiotów</h1>
+            <mat-icon style="transform: scale(2);">file_copy</mat-icon>
+        </mat-card>
+    </div>
+</div>

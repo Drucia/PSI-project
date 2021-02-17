@@ -1,0 +1,13 @@
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs; last as isLast; first as isFirst">
+            <a href="javascript:;" *ngIf="!isLast" [routerLink]="breadcrumb.url" routerLinkActive="router-link-active">
+                {{ isPolish ? breadcrumb.label : breadcrumb.engLabel }}
+            </a>
+            <span *ngIf="!isLast">/</span>
+            <span *ngIf="isLast">
+                {{ isPolish ? breadcrumb.label : breadcrumb.engLabel }}
+            </span>
+        </li>
+    </ol>
+</nav>

@@ -1,0 +1,46 @@
+<p>
+    <mat-toolbar color="primary" style="color: #e7d7d7; min-height:70px">
+        <a href="/"><img src="/assets/img/logotyp.png" alt="logotyp" width="40" height="60"></a>
+        <div class="pwr_name">
+            <h4 translate>psi.title</h4>
+            <h5 translate>psi.department</h5>
+        </div>
+        <span class="spacer"></span>
+        <div class="language" *ngIf="isPolish">
+            <h4 style="margin: 2px;">PL</h4>
+            <span>/</span>
+            <h5 style="margin: 2px; margin-right: 5px; cursor: pointer;" (click)="changeLanguage()">EN</h5>
+        </div>
+        <div class="language" *ngIf="!isPolish">
+            <h5 style="margin: 2px; cursor: pointer;" (click)="changeLanguage()">PL</h5>
+            <span>/</span>
+            <h4 style="margin: 2px; margin-right: 5px;">EN</h4>
+        </div>
+        <button *ngIf="!currentUser" mat-button routerLink="/login" fxHide.lt-sm="true" fxHide.sm="true">{{ 'psi.login' | translate }}</button>
+        <button *ngIf="currentUser" mat-button fxHide.lt-sm="true" fxHide.sm="true" (click)="logout()">{{ 'psi.logout' | translate }}</button>
+        <button mat-button routerLink="/educationprograms" fxHide.lt-sm="true" fxHide.sm="true">{{ 'psi.education-programs' | translate}}</button>
+        <button mat-icon-button (click)="drawer.toggle()" fxHide.gt-sm="true">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </mat-toolbar>
+</p>
+
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="sidenav" mode="side" position="end">
+    <div flex fxLayout="column">
+      <button *ngIf="!currentUser" mat-button routerLink="/login">
+        {{ 'psi.login' | translate }}
+      </button>
+      <button mat-button routerLink="/educationprograms">
+        {{ 'psi.education-programs' | translate }}
+      </button>
+      <button *ngIf="currentUser" mat-button (click)="logout()">
+        {{ 'psi.logout' | translate }}
+      </button>
+    </div>
+    </mat-drawer>
+    <div>
+        <app-breadcrumb #breadcrumb></app-breadcrumb>
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>

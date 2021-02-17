@@ -1,0 +1,101 @@
+.fix-size-chips{
+    min-width: 80px;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.div-wrapper {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+}
+
+.meta-data {
+    margin: 2%;
+}
+
+.card {
+    width: 10%;
+    height: 105px !important;
+    border-radius: 0px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    padding-bottom: 0px !important;
+}
+
+.fix-size {
+    min-width: 12%;
+}
+
+.card-done {
+    background: #6c4040;
+}
+
+.card-error {
+    border: 2px solid red;
+}
+
+.mat-card{
+    color: rgb(236, 148, 148);
+}
+
+.mat-card-actions, .mat-card-subtitle, .mat-card-content {
+    color: black;
+}
+
+.mat-card-subtitle{
+    margin-bottom: 0px;
+    padding-bottom: 1rem;
+}
+
+.todo-fab {
+    background: #e7d7d7;
+    height: 30px;
+    width: 30px;
+    margin-right: 0.5rem;
+    cursor: unset;
+}
+
+.error-fab {
+    background: #e7d7d7;
+    height: 30px;
+    width: 30px;
+    margin-right: 0.5rem;
+    border: 1px solid red;
+    cursor: unset;
+}
+
+.done-fab {
+    background: #6c4040;
+    height: 30px;
+    width: 30px;
+    margin-right: 0.5rem;
+    cursor: unset;
+}
+
+.hide {
+    opacity: 0;
+}
+
+.show {
+    opacity: 1;
+}
+
+.mat-option.mat-active {
+    background: #30303094;
+  }
+
+.mat-option:hover:not(.mat-option-disabled){
+    background: #30303094;
+}
+
+#loadingoverlay {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background: #3d3d3d87;
+}
